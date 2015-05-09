@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @query_user.name %>
+</p>
+
+<p>
+  <strong>Password:</strong>
+  <%= @query_user.password %>
+</p>
+
+<p>
+  <strong>Email:</strong>
+  <%= @query_user.email %>
+</p>
+
+<p>
+  <strong>Mobile:</strong>
+  <%= @query_user.mobile %>
+</p>
+
+<%= link_to 'Edit', edit_query_user_path(@query_user) %> |
+<%= link_to 'Back', query_users_path %>

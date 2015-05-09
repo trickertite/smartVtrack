@@ -1,4 +1,10 @@
 Rails.application.routes.draw do
+  resources :vehicles
+
+  resources :reservations
+
+  resources :query_users
+
   resources :stops
 
   # The priority is based upon order of creation: first created -> highest priority.

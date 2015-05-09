@@ -1,6 +1,7 @@
 class StopsController < ApplicationController
   before_action :set_stop, only: [:show, :edit, :update, :destroy]
-
+  skip_before_filter :verify_authenticity_token
+  
   # GET /stops
   # GET /stops.json
   def index

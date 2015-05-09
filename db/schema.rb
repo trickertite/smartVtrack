@@ -11,7 +11,23 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150509165641) do
+ActiveRecord::Schema.define(version: 20150509221123) do
+
+  create_table "query_users", force: :cascade do |t|
+    t.string   "name"
+    t.string   "password"
+    t.string   "email"
+    t.string   "mobile"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "reservations", force: :cascade do |t|
+    t.string   "passenger_stop"
+    t.integer  "is_alert"
+    t.datetime "created_at",     null: false
+    t.datetime "updated_at",     null: false
+  end
 
   create_table "stops", force: :cascade do |t|
     t.string   "name"
@@ -19,6 +35,14 @@ ActiveRecord::Schema.define(version: 20150509165641) do
     t.decimal  "long"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "vehicles", force: :cascade do |t|
+    t.string   "name"
+    t.string   "plate_number"
+    t.string   "type"
+    t.datetime "created_at",   null: false
+    t.datetime "updated_at",   null: false
   end
 
 end

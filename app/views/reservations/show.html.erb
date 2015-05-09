@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Passenger stop:</strong>
+  <%= @reservation.passenger_stop %>
+</p>
+
+<p>
+  <strong>Is alert:</strong>
+  <%= @reservation.is_alert %>
+</p>
+
+<%= link_to 'Edit', edit_reservation_path(@reservation) %> |
+<%= link_to 'Back', reservations_path %>
