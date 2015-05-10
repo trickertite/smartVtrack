@@ -45,6 +45,8 @@ ActiveRecord::Schema.define(version: 20150510101931) do
     t.datetime "avg"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer  "vehicle_id"
+    t.integer  "stop_id"
   end
 
   create_table "vehicles", force: :cascade do |t|
