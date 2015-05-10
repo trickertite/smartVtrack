@@ -2,7 +2,7 @@ namespace :data_filling do
   desc "TODO"
   task fill_vehicle_stops: :environment do
   	
-  	route = Vehicle.find(1)
+  	vehicle1 = Vehicle.create({name: "1", plate_number: "Route-1"})
 
   	route1 = [
   		{name: "Check post #6", lat: 24.93421,lon: 67.17703,prev: "2015-05-07 6:30"},
@@ -21,10 +21,11 @@ namespace :data_filling do
 		{name: "Fast",lat: 24.85747,lon: 67.26428,prev: "2015-05-07 7:45"}
 	]
 
+
 	route1.each do |stop|
 		@stop = Stop.create({name: stop['name'], lat: stop['lat'], long: stop['lon']})
 		@stop.save
-		@vs = @stop.vehicle_stops.create(prev: stop['prev'])
+		@vs = @stop.vehicle_stops.create(prev: stop['prev'], vehicle_id: vehicle1.id)
 		@vs.save
 	end
   end
