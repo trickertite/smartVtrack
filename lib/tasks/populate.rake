@@ -1,11 +1,11 @@
-namespace :populate_data do
+namespace :populate do
   desc "TODO"
-  task populate_vehicle_stops: :environment do
+  task data1: :environment do
   	
   	vehicle1 = Vehicle.create({name: "1", plate_number: "Route-1"})
 
   	route1 = [
-  		{name: "Check post #6", lat: 24.93421,lon: 67.17703,prev: "2015-05-07 6:30"},
+  		{name: "Check post #6",lat: 24.93421,lon: 67.17703,prev: "2015-05-07 6:30"},
 		{name: "Askri 5",lat: 24.94065,lon: 67.17915,prev: "2015-05-07 6:35"},
 		{name: "Phase 1",lat: 24.95255,lon: 67.18648,prev: "2015-05-07 6:45"},
 		{name: "Falcon",lat: 24.95668,lon: 67.21660,prev: "2015-05-07 6:50"},
@@ -23,9 +23,9 @@ namespace :populate_data do
 
 
 	route1.each do |stop|
-		@stop = Stop.create({name: stop['name'], lat: stop['lat'], long: stop['lon']})
+		@stop = Stop.create({name: stop[:name], lat: stop[:lat], long: stop[:lon]})
 		#@stop.save
-		@vs = @stop.vehicle_stops.create(prev: stop['prev'], vehicle_id: vehicle1.id)
+		@vs = @stop.vehicle_stops.create(prev: stop[:prev], vehicle_id: vehicle1.id)
 		#@vs.save
 	end
   end
