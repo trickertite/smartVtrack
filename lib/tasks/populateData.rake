@@ -1,6 +1,6 @@
-namespace :data_filling do
+namespace :populate_data do
   desc "TODO"
-  task fill_vehicle_stops: :environment do
+  task populate_vehicle_stops: :environment do
   	
   	vehicle1 = Vehicle.create({name: "1", plate_number: "Route-1"})
 
@@ -24,9 +24,9 @@ namespace :data_filling do
 
 	route1.each do |stop|
 		@stop = Stop.create({name: stop['name'], lat: stop['lat'], long: stop['lon']})
-		@stop.save
+		#@stop.save
 		@vs = @stop.vehicle_stops.create(prev: stop['prev'], vehicle_id: vehicle1.id)
-		@vs.save
+		#@vs.save
 	end
   end
 
