@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150509221123) do
+ActiveRecord::Schema.define(version: 20150510101931) do
 
   create_table "query_users", force: :cascade do |t|
     t.string   "name"
@@ -22,17 +22,27 @@ ActiveRecord::Schema.define(version: 20150509221123) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "reservations", force: :cascade do |t|
-    t.string   "passenger_stop"
-    t.integer  "is_alert"
-    t.datetime "created_at",     null: false
-    t.datetime "updated_at",     null: false
+# Could not dump table "reservations" because of following NoMethodError
+#   undefined method `[]' for nil:NilClass
+
+  create_table "share_users", force: :cascade do |t|
+    t.integer  "driver"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer  "vehicle_id"
   end
 
   create_table "stops", force: :cascade do |t|
     t.string   "name"
     t.decimal  "lat"
     t.decimal  "long"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "vehicle_stops", force: :cascade do |t|
+    t.datetime "prev"
+    t.datetime "avg"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end

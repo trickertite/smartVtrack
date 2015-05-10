@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Prev:</strong>
+  <%= @vehicle_stop.prev %>
+</p>
+
+<p>
+  <strong>Avg:</strong>
+  <%= @vehicle_stop.avg %>
+</p>
+
+<%= link_to 'Edit', edit_vehicle_stop_path(@vehicle_stop) %> |
+<%= link_to 'Back', vehicle_stops_path %>

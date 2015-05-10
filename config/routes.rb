@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resources :share_users
+
+  resources :vehicle_stops
+
   resources :vehicles
 
   resources :reservations
