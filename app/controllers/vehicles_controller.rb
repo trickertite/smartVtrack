@@ -61,6 +61,16 @@ class VehiclesController < ApplicationController
     end
   end
 
+  def find_vehicle
+    @my_vehicle = Vehicle.where("name= ? and plate_number= ?", params['vehicleName'], params['vehicleId'])
+    @vehicle = @my_vehicle.first
+    if @vehicle
+      render json: {id: @vehicle.id}
+    else
+      render json: {message: "no vehicle found"}
+    end
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_vehicle

@@ -61,6 +61,7 @@ class QueryUsersController < ApplicationController
     end
   end
 
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_query_user

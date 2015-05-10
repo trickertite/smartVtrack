@@ -61,6 +61,24 @@ class ShareUsersController < ApplicationController
     end
   end
 
+  def lets_share
+    @my_vehicle = Vehicle.where("name= ? and plate_number= ?", params['vehicleName'], params['vehicleId'])
+    @vehicle = @my_vehicle.first
+
+    @share_user = @vehicle.share_users.build() if @vehicle
+
+    if @share_user
+      if @share_user.save
+        render json: {success: 1, id: @share_user.id}
+      else
+        render json: {success: 0, message: "Share user not saved"}
+      end
+    else
+      render json: {success: 0, message: "vehicle not found"}
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_share_user

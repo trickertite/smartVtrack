@@ -61,6 +61,11 @@ class VehicleStopsController < ApplicationController
     end
   end
 
+  def create_vehicle
+    debugger
+    puts 'hello world'
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_vehicle_stop

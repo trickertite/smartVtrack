@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+
+  get 'vehicles/find_vehicle' => 'vehicles#find_vehicle', as: :find_vehicle
+  get 'share_users/lets_share' => 'share_users#lets_share', as: :lets_share
+
   resources :share_users
 
   resources :vehicle_stops
@@ -10,6 +14,8 @@ Rails.application.routes.draw do
   resources :query_users
 
   resources :stops
+
+
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
