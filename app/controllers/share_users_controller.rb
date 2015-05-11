@@ -90,6 +90,19 @@ class ShareUsersController < ApplicationController
 
   end
 
+  def real_coords
+    @vehicle = Vehicle.find(params['busId'])
+
+    @share_user = @vehicle.share_users.where("is_active = ?", 1)
+
+    if @share_user
+      render json: @share_user
+    else
+      render json: [{success: 0}]
+    end
+
+  end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_share_user

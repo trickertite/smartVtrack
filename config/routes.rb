@@ -3,7 +3,9 @@ Rails.application.routes.draw do
   root 'share_users#index'
   get 'share_users/lets_share' => 'share_users#lets_share', as: :lets_share
   get 'share_users/tracking/:id' => 'share_users#tracking', as: :tracking
+  get 'share_users/real_coords' => 'share_users#real_coords', as: :real_coords
   
+
   resources :share_users
 
   resources :vehicle_stops

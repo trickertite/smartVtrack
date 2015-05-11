@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150510232437) do
+ActiveRecord::Schema.define(version: 20150511004422) do
 
   create_table "query_users", force: :cascade do |t|
     t.string   "name"
@@ -32,6 +32,7 @@ ActiveRecord::Schema.define(version: 20150510232437) do
     t.integer  "vehicle_id"
     t.decimal  "lat"
     t.decimal  "long"
+    t.integer  "is_active"
   end
 
   create_table "stops", force: :cascade do |t|
