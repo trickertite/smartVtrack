@@ -1,8 +1,9 @@
 Rails.application.routes.draw do
 
-  get 'vehicles/find_vehicle' => 'vehicles#find_vehicle', as: :find_vehicle
+  root 'share_users#index'
   get 'share_users/lets_share' => 'share_users#lets_share', as: :lets_share
-
+  get 'share_users/tracking/:id' => 'share_users#tracking', as: :tracking
+  
   resources :share_users
 
   resources :vehicle_stops

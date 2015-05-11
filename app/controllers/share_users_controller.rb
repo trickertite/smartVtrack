@@ -61,6 +61,17 @@ class ShareUsersController < ApplicationController
     end
   end
 
+  def tracking
+    @share_user = ShareUser.find(params[:id])
+
+    @share_user.update({lat: params[:lat], long: params[:long]})
+    if @share_user.save
+      render json: [{success: 1}]
+    else
+      render json: [{success: 0}]
+    end
+  end
+
   def lets_share
     @my_vehicle = Vehicle.where("name= ? and plate_number= ?", params['vehicleName'], params['vehicleId'])
     @vehicle = @my_vehicle.first
@@ -69,12 +80,12 @@ class ShareUsersController < ApplicationController
 
     if @share_user
       if @share_user.save
-        render json: {success: 1, id: @share_user.id}
+        render json: [{success: 1, id: @share_user.id}]
       else
-        render json: {success: 0, message: "Share user not saved"}
+        render json: [{success: 0, message: "Share user not saved"}]
       end
     else
-      render json: {success: 0, message: "vehicle not found"}
+      render json: [{success: 0, message: "vehicle not found"}]
     end
 
   end
