@@ -92,13 +92,35 @@ class ShareUsersController < ApplicationController
 
   def real_coords
     @vehicle = Vehicle.find(params['busId'])
-
+    lat = params['lat']
+    long = params['long']
     @share_user = @vehicle.share_users.where("is_active = ?", 1)
+    
+    # get Users nearest stop
+    @stops = Stop.all
+    dists=[]
+    @stops.each { |stop|
+      dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, lat, long)}
+    }
+    nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
 
-    if @share_user
-      render json: @share_user
+    render json: nearest
+
+    # if @share_user
+    #   render json: @share_user
+    # else
+    #   render json: [{success: 0}]
+    # end
+
+  end
+
+  def remove
+    @share_user = ShareUser.find(params[:id])
+    
+    if @share_user.destroy
+      render json: [{success: 1}]
     else
-      render json: [{success: 0}]
+      render json: [{success: 1}]
     end
 
   end

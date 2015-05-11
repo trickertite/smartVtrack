@@ -4,6 +4,7 @@ Rails.application.routes.draw do
   get 'share_users/lets_share' => 'share_users#lets_share', as: :lets_share
   get 'share_users/tracking/:id' => 'share_users#tracking', as: :tracking
   get 'share_users/real_coords' => 'share_users#real_coords', as: :real_coords
+  get 'share_users/remove/:id' => 'share_users#remove', as: :remove
   
 
   resources :share_users
