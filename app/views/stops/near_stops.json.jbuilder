@@ -1,0 +1,1 @@
+json.(@nearest_stops)

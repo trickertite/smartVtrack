@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150511235624) do
+ActiveRecord::Schema.define(version: 20150512020603) do
 
   create_table "query_users", force: :cascade do |t|
     t.string   "name"
@@ -51,6 +51,7 @@ ActiveRecord::Schema.define(version: 20150511235624) do
     t.datetime "updated_at", null: false
     t.integer  "vehicle_id"
     t.integer  "stop_id"
+    t.integer  "seq_num"
   end
 
   create_table "vehicles", force: :cascade do |t|

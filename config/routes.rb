@@ -5,7 +5,8 @@ Rails.application.routes.draw do
   get 'share_users/tracking/:id' => 'share_users#tracking', as: :tracking
   get 'share_users/real_coords' => 'share_users#real_coords', as: :real_coords
   get 'share_users/remove/:id' => 'share_users#remove', as: :remove
-  
+  get 'vehicles/search_by_name' => 'vehicles#search_by_name', as: :search_by_name  
+  get 'stops/near_stops' => 'stops#near_stops', as: :near_stops
 
   resources :share_users
 

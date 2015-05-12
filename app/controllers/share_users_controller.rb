@@ -65,25 +65,34 @@ class ShareUsersController < ApplicationController
     @share_user = ShareUser.find(params[:id])
 
     ###### get bus nearest stop ######
-    su_lat = @share_user.lat
-    su_long = @share_user.long
+    su_lat = params['lat']
+    su_long = params['long']
 
-    @stops = Stop.all
-    dists=[]
-    @stops.each { |stop|
-      dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, qu_lat, qu_long)}
-    }
-    su_nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
+    if su_lat
+      @stops = Stop.all
+      dists=[]
+      @stops.each { |stop|
+        dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, su_lat, su_long)}
+      }
+      su_nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
 
+      # debugger
 
+      prev = @share_user.curr_stop
 
-    prev = @share_user.curr_stop
-
-    @share_user.update({lat: params[:lat], long: params[:long], prev_stop: prev, curr_stop: su_nearest[:stop_id]})
-    if @share_user.save
-      render json: [{success: 1}]
+      @share_user.update({lat: su_lat, long: su_long, prev_stop: prev, curr_stop: su_nearest[:stop_id]})
+      if @share_user.save
+        render json: [{success: 1}]
+      else
+        render json: [{success: 0, message: 'Sharing User could not be saved'}]
+      end
     else
-      render json: [{success: 0, message: 'Sharing User could not be saved'}]
+      @share_user.update({lat: su_lat, long: su_long})
+      if @share_user.save
+        render json: [{success: 1, message: 'but curr_stop not saved'}]
+      else
+        render json: [{success: 0, message: 'Sharing User could not be saved'}]
+      end
     end
   end
 
@@ -120,28 +129,40 @@ class ShareUsersController < ApplicationController
       @stops = Stop.all
       dists=[]
       @stops.each { |stop|
-        dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, su_lat, su_long)}
+        dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, qu_lat, qu_long)}
       }
       qu_nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
 
       ###### if bus is comming to user ###### 
       is_comming = true
       veh = @share_user.vehicle
-      curr_stop_seq = veh.vehicle_stops.where("stop_id = ?", @share_user.current_stop).seq_num
-      prev_stop_seq = veh.vehicle_stops.where("stop_id = ?", @share_user.prev_stop).seq_num
-      
+      curr_stop = veh.vehicle_stops.where("stop_id = ?", @share_user.curr_stop).first
+      #debugger
+      current_stop_seq= curr_stop.seq_num
+      prev_stop_seq = veh.vehicle_stops.where("stop_id = ?", @share_user.prev_stop).first.seq_num
+  
       @vehicle = Vehicle.find(params['busId'])
-      qu_stop_seq = @vehicle.vehicle_stops.where("stop_id = ?", qu_nearest[:stop_id]).seq_num
+      qu_stop = @vehicle.vehicle_stops.where("stop_id = ?", qu_nearest[:stop_id]).first
+      qu_stop_seq = qu_stop.seq_num
 
       if (prev_stop_seq < current_stop_seq && current_stop_seq <= qu_stop_seq) || (prev_stop_seq > current_stop_seq && current_stop_seq >= qu_stop_seq)
         is_comming = true
       else
         is_comming = false
       end
-
-      ##### 
+      #debugger
+      ##### calculate ARRIVAL TIME of bus #####
       if (is_comming)
 
+        time = (curr_stop.prev - qu_stop.prev).to_s
+        
+        render json: [{
+          success: 1,
+          bus_name: @vehicle.name,
+          lat: @share_user.lat,
+          long: @share_user.long,
+          time_remaining: time
+        }]
       else
         render json: [{sucess: 0, message: "Bus has gone"}]
       end
