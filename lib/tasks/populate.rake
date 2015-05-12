@@ -46,7 +46,7 @@ namespace :populate do
 		{seq_num: 12,name: "Kalandria", lat: 24.95968,lon: 67.04978,prev: "2015-05-07 7:15"},
 		{seq_num: 13,name: "Malir Halt",lat: 24.88457,lon: 67.17523,prev: "2015-05-07 7:18"},
 		{seq_num: 14,name: "Malir 15",lat: 24.87893,lon: 67.18806,prev: "2015-05-07 7:22"},
-		{seq_num: 15,"Anwar Baloch",lat: 24.86957,lon: 67.20034,prev: "2015-05-07 7:25"},
+		{seq_num: 15,name: "Anwar Baloch",lat: 24.86957,lon: 67.20034,prev: "2015-05-07 7:25"},
 		{seq_num: 16,name: "Quaidabad",lat: 24.85533,lon: 67.2116,prev: "2015-05-07 7:30"},
 		{seq_num: 17,name: "Gul Ahmed",lat: 24.85477,lon: 67.2273,prev: "2015-05-07 7:35"},
 		{seq_num: 18,name: "Fast",lat: 24.85747,lon: 67.26428,prev: "2015-05-07 7:45"}
