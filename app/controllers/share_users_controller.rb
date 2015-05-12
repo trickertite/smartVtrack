@@ -64,11 +64,26 @@ class ShareUsersController < ApplicationController
   def tracking
     @share_user = ShareUser.find(params[:id])
 
-    @share_user.update({lat: params[:lat], long: params[:long]})
+    ###### get bus nearest stop ######
+    su_lat = @share_user.lat
+    su_long = @share_user.long
+
+    @stops = Stop.all
+    dists=[]
+    @stops.each { |stop|
+      dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, qu_lat, qu_long)}
+    }
+    su_nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
+
+
+
+    prev = @share_user.curr_stop
+
+    @share_user.update({lat: params[:lat], long: params[:long], prev_stop: prev, curr_stop: su_nearest[:stop_id]})
     if @share_user.save
       render json: [{success: 1}]
     else
-      render json: [{success: 0}]
+      render json: [{success: 0, message: 'Sharing User could not be saved'}]
     end
   end
 
@@ -91,21 +106,48 @@ class ShareUsersController < ApplicationController
   end
 
   def real_coords
-    @vehicle = Vehicle.find(params['busId'])
-    lat = params['lat']
-    long = params['long']
-    @share_user = @vehicle.share_users.where("is_active = ?", 1)
-    
-    # get Users nearest stop
-    @stops = Stop.all
-    dists=[]
-    @stops.each { |stop|
-      dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, lat, long)}
-    }
-    nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
+    @vehicle = Vehicle.find(params['busId'])  ### get vehicle id , not plate number
+    @share_user = @vehicle.share_users.first
 
-    render json: nearest
+    ###### if any sharing user is sitting on that stop #####
+    if @share_user
 
+      ###### get user nearest stop ######
+
+      qu_lat = params['lat']
+      qu_long = params['long']
+
+      @stops = Stop.all
+      dists=[]
+      @stops.each { |stop|
+        dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, su_lat, su_long)}
+      }
+      qu_nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}.first
+
+      ###### if bus is comming to user ###### 
+      is_comming = true
+      veh = @share_user.vehicle
+      curr_stop_seq = veh.vehicle_stops.where("stop_id = ?", @share_user.current_stop).seq_num
+      prev_stop_seq = veh.vehicle_stops.where("stop_id = ?", @share_user.prev_stop).seq_num
+      
+      @vehicle = Vehicle.find(params['busId'])
+      qu_stop_seq = @vehicle.vehicle_stops.where("stop_id = ?", qu_nearest[:stop_id]).seq_num
+
+      if (prev_stop_seq < current_stop_seq && current_stop_seq <= qu_stop_seq) || (prev_stop_seq > current_stop_seq && current_stop_seq >= qu_stop_seq)
+        is_comming = true
+      else
+        is_comming = false
+      end
+
+      ##### 
+      if (is_comming)
+
+      else
+        render json: [{sucess: 0, message: "Bus has gone"}]
+      end
+    else
+      render json: [{ success: 0, message: "No SHARING USER found"}]
+    end
     # if @share_user
     #   render json: @share_user
     # else
