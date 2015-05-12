@@ -7,6 +7,8 @@ Rails.application.routes.draw do
   get 'share_users/remove/:id' => 'share_users#remove', as: :remove
   get 'vehicles/search_by_name' => 'vehicles#search_by_name', as: :search_by_name  
   get 'stops/near_stops' => 'stops#near_stops', as: :near_stops
+  get 'query_users/qnear_stops' => 'query_users#qnear_stops', as: :qnear_stops
+
 
   resources :share_users
 

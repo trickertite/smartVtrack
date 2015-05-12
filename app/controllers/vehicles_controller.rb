@@ -62,8 +62,13 @@ class VehiclesController < ApplicationController
   end
 
   def search_by_name
-    @vehicles = Vehicle.find_by_name(params['busName'])
-    render json: @vehicles
+    @vehicles = Vehicle.where({name: params['busName']}).sort
+    @running_vehicles = @vehicles.select { |veh|
+      not veh.share_users.first.nil?
+    }
+
+    render json: @running_vehicles
+
   end
 
   private

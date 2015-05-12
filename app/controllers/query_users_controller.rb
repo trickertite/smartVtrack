@@ -61,6 +61,19 @@ class QueryUsersController < ApplicationController
     end
   end
 
+  def qnear_stops
+    ### find stops near to querying users #####
+    qu_lat = params['lat']
+    qu_long = params['long']
+    @stops = Stop.all
+    dists=[]
+    @stops.each { |stop|
+      dists << {stop_id: stop.id, dist: ShareUser.gps2m(stop.lat, stop.long, qu_lat, qu_long), stop_name: stop.name}
+    }
+    su_nearest = dists.sort{|left, right| left[:dist] <=> right[:dist]}
+    render json: su_nearest
+  end
+
 
   private
     # Use callbacks to share common setup or constraints between actions.
