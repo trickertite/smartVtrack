@@ -82,6 +82,8 @@ class ShareUsersController < ApplicationController
 
       if @share_user.curr_stop.nil?
         @share_user.update({lat: su_lat, long: su_long, prev_stop: prev, curr_stop: su_nearest[:stop_id]})
+        render json: [{success: 1}] if @share_user.save
+
       elsif (su_nearest[:stop_id] != @share_user.curr_stop)
         @share_user.update({lat: su_lat, long: su_long, prev_stop: prev, curr_stop: su_nearest[:stop_id]})
         if @share_user.save
